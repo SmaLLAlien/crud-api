@@ -1,17 +1,19 @@
 {
   "compilerOptions": {
-    "module": "es2020",
+    "module": "CommonJS",
     "esModuleInterop": true,
-    "target": "es6",
-    "moduleResolution": "node",
+    "target": "es2020",
+    "moduleResolution": "Node",
     "sourceMap": true,
-    "outDir": "dist",
-    "rootDir": "./src"
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
   },
   "ts-node": {
     "esm": true
   },
-  "lib": ["es2020"],
+  "include": ["src/**/*"],
   "exclude":[
     "./node_modules"
   ]
