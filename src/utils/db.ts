@@ -8,6 +8,9 @@ const user_database = new Map();
 
 export const getUser = async (id: string): Promise<User> => {
     return new Promise((resolve, reject) => {
+        if (!isIdValidUUID(id)) {
+            reject(USER_ERRORS.idNotValid);
+        }
         if (user_database.has(id)) {
             const user: User = user_database.get(id);
             resolve(user);
@@ -73,11 +76,14 @@ export const createUser = async (user: User): Promise<User> => {
 
 const checkUserRequirements = (user: User): string => {
     if (!user?.username?.trim() || !user.age || !user.hobbies) {
-        console.log(2);
         return USER_ERRORS.allUserFieldsAreRequired;
     }
     if (!Number(user.age)) {
         return USER_ERRORS.ageNotANumber;
+    }
+
+    if (!Array.isArray(user.hobbies)) {
+        return USER_ERRORS.hobbiesNotArray;
     }
 
     return null;

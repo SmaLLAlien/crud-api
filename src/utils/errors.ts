@@ -4,4 +4,6 @@ export const USER_ERRORS = {
     allUserFieldsAreRequired: 'User doesnt have some required fields',
     ageNotANumber: 'Age must be a number',
     idNotValid: 'ID not valid',
+    hobbiesNotArray: "Hobbies should be an array"
+
 }
