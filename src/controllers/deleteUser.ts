@@ -5,7 +5,7 @@ import {handleDbError} from "../utils/handleDbError";
 
 export const deleteUser = async (req: IRequest, res: http.ServerResponse) => {
     try {
-        const userId = await db.deleteUser(req.body);
+        const userId = await db.deleteUser(req.body.id);
         res.statusCode = 204;
         res.end(JSON.stringify({userId}));
     } catch (e) {
