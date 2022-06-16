@@ -16,12 +16,12 @@ export const STATIC_ROUTES = {
 
 export const ROUTES_WITH_PARAMS = {
     PUT: {
-        '/api/users/*': updateUser,
+        '/api/users/(.*)': updateUser,
     },
     DELETE : {
-        '/api/users/*': deleteUser,
+        '/api/users/(.*)': deleteUser,
     },
     GET: {
-        '/api/users/*': getUser,
+        '/api/users/(.*)': getUser,
     }
 }
