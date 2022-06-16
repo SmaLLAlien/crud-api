@@ -48,7 +48,8 @@ export const updateUser = async (newUserData: User): Promise<string> => {
             reject(USER_ERRORS.idNotValid);
         }
         if (user_database.has(newUserData.id)) {
-            const updatedUser = new User(newUserData.id, newUserData.username, newUserData.age, newUserData.hobbies);
+            const dbUser = user_database.get(newUserData.id);
+            const updatedUser = {...dbUser, ...newUserData};
             user_database.set(newUserData.id, updatedUser);
             resolve(newUserData.id);
         } else {
