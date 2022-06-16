@@ -7,7 +7,6 @@ export const bodyParser = (req, res, cb) => {
 
     req.on('end', function() {
         req.body = data;
-        console.log( 'on end: ', data )
         if (data && data.indexOf('{') > -1 ) {
             req.body = JSON.parse(data);
             cb(req, res);

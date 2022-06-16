@@ -4,7 +4,6 @@ import * as http from 'http';
 import dotenv from 'dotenv'
 import {IRequest} from "./config/interfaces";
 import {ROUTES_WITH_PARAMS, STATIC_ROUTES} from "./utils/routes";
-import {types} from "./utils/serializator";
 import {bodyParser} from "./utils/bodyParser";
 
 
@@ -15,24 +14,21 @@ const PORT = Number(config?.parsed?.PORT) || 5000;
 const server = http.createServer(async (req: IRequest, res) => {
     const url = req.url?.trim().replace(/\/$/, "");
     const method: string = req.method;
-    let routeDataReturn: any = STATIC_ROUTES[method] && STATIC_ROUTES[method][url];
-    if (!routeDataReturn) {
+    let handler: any = STATIC_ROUTES[method] && STATIC_ROUTES[method][url];
+    if (!handler) {
         let paramRoutes = ROUTES_WITH_PARAMS[method];
         Object.keys(paramRoutes).forEach(r => {
             if (url?.match(r)) {
-                routeDataReturn = paramRoutes[r];
+                handler = paramRoutes[r];
             }
         })
     }
-    if (!routeDataReturn) {
+    if (!handler) {
         res.statusCode = 404;
         res.end('not found\n');
     } else {
         bodyParser(req, res, async (req, res) => {
-            const type = typeof routeDataReturn;
-            const renderer = types[type];
-            const result = await renderer(routeDataReturn, req, res);
-            res.end(typeof result === 'string' ? result : JSON.stringify(result));
+            handler(req, res);
         })
     }
 });
