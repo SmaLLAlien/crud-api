@@ -1,5 +1,5 @@
 import {createUser} from "../controllers/createUser";
-import {getUsers} from "../controllers/getUsers";
+import {getUsersList} from "../controllers/getUsersList";
 import {updateUser} from "../controllers/updatUser";
 import {deleteUser} from "../controllers/deleteUser";
 import {getUser} from "../controllers/getUser";
@@ -10,7 +10,7 @@ export const STATIC_ROUTES = {
     },
     GET: {
         '': '<h1>welcome to homepage</h1><hr>',
-        '/api/users': getUsers,
+        '/api/users': getUsersList,
     }
 }
 
