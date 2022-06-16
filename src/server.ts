@@ -2,47 +2,14 @@
 
 import * as http from 'http';
 import dotenv from 'dotenv'
-import {getUsers} from "./controllers/getUsers";
 import {IRequest} from "./config/interfaces";
-import {getUser} from "./controllers/getUser";
-import {deleteUser} from "./controllers/deleteUser";
-import {createUser} from "./controllers/createUser";
-import {updateUser} from "./controllers/updatUser";
+import {ROUTES_WITH_PARAMS, STATIC_ROUTES} from "./utils/routes";
+import {types} from "./utils/serializator";
 
 
 const config = dotenv.config();
 const PORT = Number(config?.parsed?.PORT) || 5000;
 
-
-const STATIC_ROUTES = {
-    POST: {
-        '/api/users': createUser,
-    },
-    GET: {
-        '': '<h1>welcome to homepage</h1><hr>',
-        '/api/users': getUsers,
-    }
-}
-
-const ROUTES_WITH_PARAMS = {
-    PUT: {
-        '/api/users/*': updateUser,
-    },
-    DELETE : {
-        '/api/users/*': deleteUser,
-    },
-    GET: {
-        '/api/users/*': getUser,
-    }
-}
-
-const types = {
-    object: async (data) => JSON.stringify(data),
-    string: async (s: string) => s,
-    number: async (n: number) => n + '',
-    undefined: async () => 'not found',
-    function: async (fn: any, req: http.IncomingMessage, res: http.ServerResponse) => await fn(req, res),
-};
 
 const server = http.createServer(async (req: IRequest, res) => {
     const url = req.url?.trim().replace(/\/$/, "");
