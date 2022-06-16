@@ -12,6 +12,7 @@ const PORT = Number(config?.parsed?.PORT) || 5000;
 
 
 const server = http.createServer(async (req: IRequest, res) => {
+    res.setHeader('Process-Id', process.pid);
     const url = req.url?.trim().replace(/\/$/, "");
     const method: string = req.method;
     let handler: any = STATIC_ROUTES[method] && STATIC_ROUTES[method][url];
@@ -34,7 +35,7 @@ const server = http.createServer(async (req: IRequest, res) => {
 });
 
 server.listen(PORT, () => {
-    console.log(`Server running at http://localhost:${PORT}/`);
+    console.log(`Proccess ${process.pid}: Server running at http://localhost:${PORT}/`);
 });
 
 server.on('error', (err: NodeJS.ErrnoException) => {
