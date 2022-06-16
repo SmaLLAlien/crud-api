@@ -3,13 +3,14 @@ import {getUsersList} from "../controllers/getUsersList";
 import {updateUser} from "../controllers/updatUser";
 import {deleteUser} from "../controllers/deleteUser";
 import {getUser} from "../controllers/getUser";
+import {defaultRoute} from "../controllers/defaultRoute";
 
 export const STATIC_ROUTES = {
     POST: {
         '/api/users': createUser,
     },
     GET: {
-        '': '<h1>welcome to homepage</h1><hr>',
+        '': defaultRoute,
         '/api/users': getUsersList,
     }
 }
