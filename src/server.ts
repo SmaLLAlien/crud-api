@@ -5,6 +5,7 @@ import dotenv from 'dotenv'
 import {IRequest} from "./config/interfaces";
 import {ROUTES_WITH_PARAMS, STATIC_ROUTES} from "./utils/routes";
 import {types} from "./utils/serializator";
+import {bodyParser} from "./utils/bodyParser";
 
 
 const config = dotenv.config();
@@ -27,10 +28,12 @@ const server = http.createServer(async (req: IRequest, res) => {
         res.statusCode = 404;
         res.end('not found\n');
     } else {
-        const type = typeof routeDataReturn;
-        const renderer = types[type];
-        const result = await renderer(routeDataReturn, req, res);
-        res.end(typeof result === 'string' ? result : JSON.stringify(result));
+        bodyParser(req, res, async (req, res) => {
+            const type = typeof routeDataReturn;
+            const renderer = types[type];
+            const result = await renderer(routeDataReturn, req, res);
+            res.end(typeof result === 'string' ? result : JSON.stringify(result));
+        })
     }
 });
 
