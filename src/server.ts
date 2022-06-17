@@ -18,7 +18,7 @@ const server = http.createServer(async (req: IRequest, res) => {
     let handler: any = STATIC_ROUTES[method] && STATIC_ROUTES[method][url];
     if (!handler) {
         let paramRoutes = ROUTES_WITH_PARAMS[method];
-        Object.keys(paramRoutes).forEach(r => {
+        paramRoutes && Object.keys(paramRoutes).forEach(r => {
             if (url?.match(r)) {
                 handler = paramRoutes[r];
             }
