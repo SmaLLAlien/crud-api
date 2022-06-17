@@ -9,13 +9,13 @@ const user_database = new Map();
 export const getUser = async (id: string): Promise<User> => {
     return new Promise((resolve, reject) => {
         if (!isIdValidUUID(id)) {
-            reject(USER_ERRORS.idNotValid);
+            reject(new Error(USER_ERRORS.idNotValid));
         }
         if (user_database.has(id)) {
             const user: User = user_database.get(id);
             resolve(user);
         } else {
-            reject(USER_ERRORS.noUser);
+            reject(new Error(USER_ERRORS.noUser));
         }
     });
 }
@@ -30,14 +30,14 @@ export const getUsersList = async (): Promise<User[]> => {
 export const deleteUser = async (id: string): Promise<string> => {
     return new Promise((resolve, reject) => {
         if (!isIdValidUUID(id)) {
-            reject(USER_ERRORS.idNotValid);
+            reject(new Error(USER_ERRORS.idNotValid));
         }
         if (user_database.has(id)) {
             const user: User = user_database.get(id);
             user_database.delete(id);
             resolve(user.id);
         } else {
-            reject(USER_ERRORS.noUser);
+            reject(new Error(USER_ERRORS.noUser));
         }
     });
 }
@@ -45,7 +45,7 @@ export const deleteUser = async (id: string): Promise<string> => {
 export const updateUser = async (newUserData: User): Promise<string> => {
     return new Promise((resolve, reject) => {
         if (!isIdValidUUID(newUserData.id)) {
-            reject(USER_ERRORS.idNotValid);
+            reject(new Error(USER_ERRORS.idNotValid));
         }
         if (user_database.has(newUserData.id)) {
             const dbUser = user_database.get(newUserData.id);
@@ -53,7 +53,7 @@ export const updateUser = async (newUserData: User): Promise<string> => {
             user_database.set(newUserData.id, updatedUser);
             resolve(newUserData.id);
         } else {
-            reject(USER_ERRORS.noUser);
+            reject(new Error(USER_ERRORS.noUser));
         }
     });
 }
@@ -61,11 +61,11 @@ export const updateUser = async (newUserData: User): Promise<string> => {
 export const createUser = async (user: User): Promise<User> => {
     return new Promise((resolve, reject) => {
         if (user.id && user_database.has(user.id)) {
-            reject(USER_ERRORS.alreadyExist);
+            reject(new Error(USER_ERRORS.alreadyExist));
         } else {
             const isUserAppropriate = checkUserRequirements(user);
             if (isUserAppropriate) {
-                reject(isUserAppropriate);
+                reject(new Error(isUserAppropriate));
             }
             const newId = uuidv4();
             const newUser = new User(newId, user.username, user.age, user.hobbies);
