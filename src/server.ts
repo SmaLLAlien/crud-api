@@ -5,6 +5,7 @@ import dotenv from 'dotenv'
 import {IRequest} from "./config/interfaces";
 import {bodyParser} from "./utils/bodyParser";
 import {getUrlHandler} from "./utils/getUrlHandler";
+import {handleProcessExit} from "./utils/handleProcessExit";
 
 
 const config = dotenv.config();
@@ -33,4 +34,8 @@ server.on('error', (err: NodeJS.ErrnoException) => {
     if (err.code === 'EACCES') {
         console.log(`No access to port: ${PORT}`);
     }
+});
+
+[`exit`, `SIGINT`, `SIGUSR1`, `SIGUSR2`, `uncaughtException`, `SIGTERM`].forEach((eventType, index) => {
+    process.on(eventType, () => handleProcessExit(index + 1));
 });
