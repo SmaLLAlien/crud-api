@@ -42,16 +42,16 @@ export const deleteUser = async (id: string): Promise<string> => {
     });
 }
 
-export const updateUser = async (newUserData: User): Promise<string> => {
+export const updateUser = async (id: string, newUserData: User): Promise<string> => {
     return new Promise((resolve, reject) => {
-        if (!isIdValidUUID(newUserData.id)) {
+        if (!isIdValidUUID(id)) {
             reject(new Error(USER_ERRORS.idNotValid));
         }
-        if (user_database.has(newUserData.id)) {
-            const dbUser = user_database.get(newUserData.id);
-            const updatedUser = {...dbUser, ...newUserData};
-            user_database.set(newUserData.id, updatedUser);
-            resolve(newUserData.id);
+        if (user_database.has(id)) {
+            const dbUser = user_database.get(id);
+            const updatedUser = {...dbUser, ...newUserData, id};
+            user_database.set(id, updatedUser);
+            resolve(updatedUser);
         } else {
             reject(new Error(USER_ERRORS.noUser));
         }
@@ -79,7 +79,7 @@ const checkUserRequirements = (user: User): string => {
     if (!user?.username?.trim() || !user.age || !user.hobbies) {
         return USER_ERRORS.allUserFieldsAreRequired;
     }
-    if (!Number(user.age)) {
+    if (typeof user.age !== "number") {
         return USER_ERRORS.ageNotANumber;
     }
 

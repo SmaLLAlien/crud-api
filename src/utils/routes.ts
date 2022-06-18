@@ -7,22 +7,22 @@ import {defaultRoute} from "../controllers/defaultRoute";
 
 export const STATIC_ROUTES = {
     POST: {
-        '/api/users': createUser,
+        'api/users': createUser,
     },
     GET: {
         '': defaultRoute,
-        '/api/users': getUsersList,
+        'api/users': getUsersList,
     }
 }
 
 export const ROUTES_WITH_PARAMS = {
     PUT: {
-        '/api/users/(.*)': updateUser,
+        'api/users/(.*)': updateUser,
     },
     DELETE : {
-        '/api/users/(.*)': deleteUser,
+        'api/users/(.*)': deleteUser,
     },
     GET: {
-        '/api/users/(.*)': getUser,
+        'api/users/(.*)': getUser,
     }
 }
