@@ -42,14 +42,30 @@ export const deleteUser = async (id: string): Promise<string> => {
     });
 }
 
-export const updateUser = async (id: string, newUserData: User): Promise<string> => {
+export const updateUser = async (id: string, newUserData: User): Promise<User> => {
     return new Promise((resolve, reject) => {
         if (!isIdValidUUID(id)) {
             reject(new Error(USER_ERRORS.idNotValid));
         }
+
+        if (newUserData.age) {
+            const isAgeInvalid = checkAge(newUserData);
+            isAgeInvalid && reject(new Error(isAgeInvalid));
+        }
+
+        if (newUserData.hobbies) {
+            const isHobbiesInvalid = checkHobbies(newUserData)
+            isHobbiesInvalid && reject(new Error(isHobbiesInvalid));
+        }
+
         if (user_database.has(id)) {
-            const dbUser = user_database.get(id);
-            const updatedUser = {...dbUser, ...newUserData, id};
+            const dbUser: User = user_database.get(id);
+            const updatedUser: User = {
+                id: dbUser.id,
+                username: newUserData.username ? newUserData.username : dbUser.username,
+                age: newUserData.age ? newUserData.age : dbUser.age,
+                hobbies: newUserData.hobbies ? newUserData.hobbies : dbUser.hobbies,
+            };
             user_database.set(id, updatedUser);
             resolve(updatedUser);
         } else {
@@ -75,16 +91,35 @@ export const createUser = async (user: User): Promise<User> => {
     });
 }
 
-const checkUserRequirements = (user: User): string => {
-    if (!user?.username?.trim() || !user.age || !user.hobbies) {
-        return USER_ERRORS.allUserFieldsAreRequired;
-    }
+const checkAge = (user: User): string => {
     if (typeof user.age !== "number") {
         return USER_ERRORS.ageNotANumber;
     }
 
+    return null;
+}
+
+const checkHobbies = (user: User): string => {
     if (!Array.isArray(user.hobbies)) {
         return USER_ERRORS.hobbiesNotArray;
+    }
+
+    return null;
+}
+
+const checkUserRequirements = (user: User): string => {
+    if (!user?.username?.trim() || !user.age || !user.hobbies) {
+        return USER_ERRORS.allUserFieldsAreRequired;
+    }
+
+    const isAgeAppropriate = checkAge(user);
+    if (isAgeAppropriate) {
+        return isAgeAppropriate;
+    }
+
+    const isHobbiesAppropriate = checkHobbies(user);
+    if (isHobbiesAppropriate) {
+        return isHobbiesAppropriate;
     }
 
     return null;

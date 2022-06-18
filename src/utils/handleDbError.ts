@@ -13,7 +13,7 @@ export const handleDbError = (error: any, req: IRequest, res: http.ServerRespons
         } else if (error === USER_ERRORS.noUser) {
             res.statusCode = 404;
             msg = error;
-        } else if (error === USER_ERRORS.allUserFieldsAreRequired || error === USER_ERRORS.ageNotANumber) {
+        } else if (error === USER_ERRORS.allUserFieldsAreRequired || error === USER_ERRORS.ageNotANumber || error === USER_ERRORS.hobbiesNotArray) {
             res.statusCode = 400;
             msg = error;
         }
@@ -24,11 +24,10 @@ export const handleDbError = (error: any, req: IRequest, res: http.ServerRespons
         } else if (error.message === USER_ERRORS.noUser) {
             res.statusCode = 404;
             msg = error.message;
-        } else if (error.message === USER_ERRORS.allUserFieldsAreRequired || error.message === USER_ERRORS.ageNotANumber) {
+        } else if (error.message === USER_ERRORS.allUserFieldsAreRequired || error.message === USER_ERRORS.ageNotANumber || error.message === USER_ERRORS.hobbiesNotArray) {
             res.statusCode = 400;
             msg = error.message;
         }
-
         console.log(`[ERROR]: ${error.message}`);
     }
 
