@@ -11,7 +11,7 @@ const config = dotenv.config();
 const PORT = Number(config?.parsed?.PORT) || 5000;
 
 
-const server = http.createServer(async (req: IRequest, res) => {
+export const server = http.createServer(async (req: IRequest, res) => {
     res.setHeader('Process-Id', process.pid);
     const handler = getUrlHandler(req, res);
 
